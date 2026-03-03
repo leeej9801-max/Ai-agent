@@ -1,0 +1,27 @@
+services:
+  mariadb:
+    container_name: mariadb
+    image: mariadb:12.1.2
+    restart: always
+    ports:
+      - 3306:3306
+    networks:
+      - file-net
+    volumes:
+      - ./mariadb/conf.d:/etc/mysql/conf.d:ro
+      - ./mariadb/initdb.d:/docker-entrypoint-initdb.d:ro
+      - data-mariadb:/var/lib/mysql:rw
+    environment:
+      - MARIADB_HOST=localhost
+      - MARIADB_PORT=3306
+      - MARIADB_ROOT_PASSWORD=1234
+      - MARIADB_DATABASE=edu
+      - TZ=Asia/Seoul
+      - LC_ALL:en_US.UTF-8
+
+networks:
+  file-net:
+    driver: bridge
+
+volumes:
+ data-mariadb: {}
